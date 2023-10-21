@@ -67,7 +67,7 @@ const findProductById = async (req, res) => {
   res.send(prod);
 };
 
-findMyProducts = async (req, res) => {
+const findMyProducts = async (req, res) => {
   let uid = req.params.id;
   const prod = await db.products.findAll({
     where: {

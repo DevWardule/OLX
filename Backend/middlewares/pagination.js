@@ -1,6 +1,6 @@
 //Pagination of model
 const db = require("../models/server");
-const { connect } = require("../routes/productRoutes");
+// const { connect } = require("../routes/productRoutes");
 
 function paginationRes(model) {
   return async (req, res, next) => {

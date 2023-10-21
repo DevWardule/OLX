@@ -21,6 +21,7 @@ app.use('/api/fav',router4);
 
 // const server = http.createServer(app);
 //http://127.0.0.1:3000/api/user
+
 app.get('/',(req,res)=>{
     res.send("<h1> welcome </h1>")
 })

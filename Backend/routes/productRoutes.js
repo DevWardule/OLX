@@ -31,6 +31,7 @@ router.post(
   upload.single("image_url"),
   productController.addProduct
 );
+
 router.get("/findbyname/:name", productController.findProductbyName);
 router.get("/findbycat/:catname", productController.findProductbyCat);
 router.get("/findprodbyid/:id", productController.findProductById);

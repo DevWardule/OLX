@@ -389,7 +389,11 @@ export default function Navbar() {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    All
+                    {/* {categories.length===0}
+                    {a.selectedCategoryId == "null"
+                      ? "All"
+                      : categories[a.selectedCategoryId].name} */}
+                      All
                   </a>
                   <ul
                     className="dropdown-menu custom-dropdown"
@@ -399,7 +403,7 @@ export default function Navbar() {
                       className="dropdown-item"
                       onClick={() => a.setSelectedCategoryId("null")}
                     >
-                      All
+                      ALL
                     </li>
 
                     {categories.map((element) => {
@@ -416,7 +420,10 @@ export default function Navbar() {
                       );
                     })}
                   </ul>
-                  {/* {console.log("THe select id is ", a.selectedCategoryId)} */}
+                  {console.log(
+                    "THe select id is #######",
+                    a.selectedCategoryId
+                  )}
                 </li>
 
                 <li className="nav-item">
