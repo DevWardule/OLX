@@ -3,7 +3,7 @@ import noteContext from "../context/notes/noteContext";
 
 export default function InfoOfItem(props) {
   const a = useContext(noteContext);
-  //   console.log(a.id);
+  
   const [infoOfProd, setInfoOfProd] = useState({});
   const [infoOfSeller, setInfoOfSeller] = useState({});
   //   const [prodId, setprodId] = useState({});
@@ -36,18 +36,16 @@ export default function InfoOfItem(props) {
   //     fetch("http://127.0.0.1:3000/api/user/finduserbyid/" + infoOfProd.userId)
   //       .then((data) => data.json())
   //       .then((data) => setInfoOfSeller(data));
-  //     console.log("hi");
   //   }, []);
 
   //   useEffect(() => {
   //     fetch("http://127.0.0.1:3000/api/user/finduserbyid/" + infoOfProd.userId)
   //       .then((data) => data.json())
   //       .then((data) => setInfoOfSeller(data));
-  //     console.log("hi");
   //   }, []);
 
-  console.log(infoOfProd);
-  console.log(infoOfSeller);
+  // console.log(infoOfProd);
+  // console.log(infoOfSeller);
 
   return (
     <div>
@@ -147,6 +145,7 @@ export default function InfoOfItem(props) {
                   <h3>Location: {infoOfSeller.address}</h3>
                   <h3>Contact: {infoOfSeller.phone}</h3>
                   <h3>Email: {infoOfSeller.email}</h3>
+                  <h3>Quantity: {infoOfProd.quantity}</h3>
                 </div>
               </div>
 

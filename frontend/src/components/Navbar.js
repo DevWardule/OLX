@@ -15,16 +15,14 @@ export default function Navbar() {
   const [passwordDifficulty, setPasswordDifficulty] = useState(0);
   const [passwordDifficultyForLogin, setPasswordDifficultyForLogin] =
     useState(0);
-  const [robot, setRobot] = useState(0);
+
   const [infoInSearch, setinfoInSearch] = useState("");
   const [newPassword1, setNewPassword] = useState("");
   const [newCPassword, setNewCPassword] = useState("");
   const [validedContact, setValidContact] = useState(0);
   const [categories, setCategories] = useState([]);
-  const [isLogIn, setIsLogIn] = useState("Login");
+  const [isLogIn, setIsLogIn] = useState(0);
   const [searchedArr, setsearchedArr] = useState([]);
-
-  // console.log(UserName);
 
   const a = useContext(noteContext);
 
@@ -51,7 +49,6 @@ export default function Navbar() {
   const Search = () => {
     let Information_search = document.getElementById("searchinfoinurl").value;
     setinfoInSearch(Information_search);
-    console.log("search ", infoInSearch);
   };
   const userContact = () => {
     let UserContact = document.getElementById("userContact").value;
@@ -99,7 +96,6 @@ export default function Navbar() {
 
   const passwordInput2 = () => {
     let newPassword = document.getElementById("exampleInputPassword2").value;
-    // console.log(newPassword);
     setNewPassword(newPassword);
     let secondPassword = document.getElementById(
       "cexampleInputPassword2"
@@ -146,7 +142,6 @@ export default function Navbar() {
 
   const passwordInputforlogin = () => {
     let newPassword = document.getElementById("exampleInputPassword1").value;
-    // console.log(newPassword);
     setPassword(newPassword);
     let capitalLetter = 0;
     let smallLetter = 0;
@@ -189,23 +184,12 @@ export default function Navbar() {
     // }
   };
 
-  const Robot = () => {
-    if (robot == 0) {
-      setRobot(1);
-    } else {
-      setRobot(0);
-    }
-  };
-
   const clearData = () => {
     if (password != "") {
       setPassword("");
     }
     if (email != "") {
       setEmail("");
-    }
-    if (robot != 0) {
-      setRobot(0);
     }
   };
 
@@ -258,12 +242,18 @@ export default function Navbar() {
       .then((response) => response.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error(error));
+
+    if (
+      localStorage.getItem("uid") === "-1" ||
+      localStorage.getItem("uid") == null
+    ) {
+      setIsLogIn(0);
+    } else {
+      setIsLogIn(1);
+    }
   }, []);
 
-  // console.log(categories);
-
   const loginfunc = async () => {
-    // console.log("hi");
     let user = {
       email: email,
       password: password,
@@ -282,15 +272,12 @@ export default function Navbar() {
 
     let fetchRes = await fetch("http://127.0.0.1:3000/api/user/login", options);
     let res = await fetchRes.json();
-    // console.log(res);
 
     // let uid = res.id;
-    // console.log(uid)
-    // console.log(res);
     // a.setUserId(uid);
     // assuming your JWT token is stored in a variable named `token`
 
-    setIsLogIn("Logout");
+    setIsLogIn(1);
     localStorage.setItem("token", res.accessToken);
     localStorage.setItem("uid", res.uid);
   };
@@ -300,27 +287,23 @@ export default function Navbar() {
     const headers = {
       Authorization: ` Bearer ${token} `,
     };
-    // console.log(` Bearer ${token} `);
     let fetchres = await fetch("http://127.0.0.1:3000/api/user/curuser", {
       headers,
     });
     let res = await fetchres.json();
     let uid = res.id;
-    // console.log(res);
     a.setUserId(uid);
-    // console.log("The profile id ", a.userId);
   };
 
   const logoutfunc = () => {
     localStorage.clear();
-    setIsLogIn("Login");
+    setIsLogIn(0);
     a.setUserId(-1);
     // Navigate("/");
   };
 
   const createAcc = async () => {
     let s = FirstName + " " + LastName;
-    // console.log(s);
     let obj = {
       name: s,
       email: newEmail,
@@ -342,12 +325,9 @@ export default function Navbar() {
       options
     );
     let res = await fetchRes.json();
-    // console.log(res);
   };
 
   const seachFun = async () => {};
-
-  // console.log(passwordDifficultyForLogin);
 
   return (
     <>
@@ -393,7 +373,7 @@ export default function Navbar() {
                     {a.selectedCategoryId == "null"
                       ? "All"
                       : categories[a.selectedCategoryId].name} */}
-                      All
+                    All
                   </a>
                   <ul
                     className="dropdown-menu custom-dropdown"
@@ -420,28 +400,49 @@ export default function Navbar() {
                       );
                     })}
                   </ul>
-                  {console.log(
+                  {/* {console.log(
                     "THe select id is #######",
                     a.selectedCategoryId
-                  )}
+                  )} */}
                 </li>
-
-                <li className="nav-item">
+                {isLogIn ? (
+                  <li className="nav-item">
+                    <Link
+                      className="nav-link "
+                      aria-current="page"
+                      to="/profile"
+                      onClick={profilefunc}
+                    >
+                      Profile
+                    </Link>
+                  </li>
+                ) : (
+                  <li className="nav-item">
+                    <Link
+                      className="nav-link disabled"
+                      aria-current="page"
+                      to="/profile"
+                      onClick={profilefunc}
+                    >
+                      Profile
+                    </Link>
+                  </li>
+                )}
+                {/* <li className="nav-item">
                   <Link
-                    className="nav-link active"
+                    className="nav-link disabled"
                     aria-current="page"
                     to="/profile"
                     onClick={profilefunc}
                   >
                     Profile
                   </Link>
-                </li>
+                </li> */}
               </ul>
 
               <ul className="navbar-nav  mb-2 mb-lg-0">
                 <li className="nav-item my-2">
                   <form className="d-flex" role="search">
-                    {/* {console.log("search ", infoInSearch)} */}
                     <input
                       className="form-control me-2"
                       id="searchinfoinurl"
@@ -464,9 +465,7 @@ export default function Navbar() {
                         className="btn btn-outline-danger login "
                         onClick={logoutfunc}
                       >
-                        {console.log("😊😊😊", localStorage.getItem("token"))}
-
-                        {isLogIn}
+                        {isLogIn ? "Logout" : "Login"}
                       </button>
                     </Link>
                   ) : (
@@ -477,7 +476,7 @@ export default function Navbar() {
                       data-bs-target="#loginModal"
                       onClick={clearData}
                     >
-                      {isLogIn}
+                      {isLogIn ? "Logout" : "Login"}
                     </button>
                   )}
                 </li>
@@ -547,17 +546,6 @@ export default function Navbar() {
                       </p>
                     )}
                   </div>
-                  <div className="mb-3 form-check">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      id="exampleCheck1"
-                      onClick={Robot}
-                    />
-                    <label className="form-check-label" htmlFor="exampleCheck1">
-                      I am not Robot
-                    </label>
-                  </div>
                 </form>
 
                 <p>
@@ -581,8 +569,7 @@ export default function Navbar() {
                   disabled={
                     passwordDifficultyForLogin === 0 ||
                     email.length === 0 ||
-                    password.length === 0 ||
-                    robot === 0
+                    password.length === 0
                   }
                   onClick={loginfunc}
                 >

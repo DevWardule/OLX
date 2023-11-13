@@ -5,9 +5,11 @@ export default function SellItem() {
   const [ProName, setProName] = useState("");
   const [LocationAddress, setLocationAddress] = useState("");
   const [CostofItem, setCostofItem] = useState("");
+  const [QuantityofItem, setQuantityofItem] = useState("");
   const [DescriptionofItem, setDescriptionofItem] = useState("");
   const [numberOfImage, setnumberOfImage] = useState(0);
   const [validCostofItem, setValidCostofItem] = useState(0);
+  const [validQuantityofItem, setValidQuantityofItem] = useState(0);
   const [checkCategory, setcheckCategory] = useState(0);
   const [categories, setCategories] = useState([]);
 
@@ -24,6 +26,12 @@ export default function SellItem() {
     let newCostofItem = document.getElementById("ProductCost").value;
     setCostofItem(newCostofItem);
     checkValidCostOfItem();
+  };
+
+  const initialQuantityofItem = () => {
+    let newQuantityofItem = document.getElementById("ProductQuantity").value;
+    setQuantityofItem(newQuantityofItem);
+    checkValidQuantityOfItem();
   };
   const initialDescriptionofItem = () => {
     let newDescriptionofItem =
@@ -45,6 +53,22 @@ export default function SellItem() {
       }
     }
     setValidCostofItem(1);
+  };
+
+  const checkValidQuantityOfItem = () => {
+    let curQuantity = document.getElementById("ProductQuantity").value;
+
+    if (curQuantity.length === 0) {
+      setValidQuantityofItem(0);
+      return;
+    }
+    for (let i = 0; i < curQuantity.length; i++) {
+      if (curQuantity[i] < "0" || curQuantity[i] > "9") {
+        setValidQuantityofItem(0);
+        return;
+      }
+    }
+    setValidQuantityofItem(1);
   };
 
   const checkNumberOfImage = () => {
@@ -101,6 +125,7 @@ export default function SellItem() {
     formData.append("loc", LocationAddress);
     formData.append("catid", checkCategory);
     formData.append("seller_id", uid);
+    formData.append("quantity", QuantityofItem);
 
     var requestOptions = {
       method: "POST",
@@ -181,6 +206,32 @@ export default function SellItem() {
           {validCostofItem === 0 && CostofItem !== "" && (
             <p style={{ color: "red", textAlign: "center" }}>
               Cost of the Item should contains only integer value
+            </p>
+          )}
+
+          <div className="input-group mb-3">
+            <label
+              htmlFor="ProductQuantity"
+              className="form-label input-group-text mx-3 col-md-3"
+            >
+              {" "}
+              Quantity of the Product
+              <span style={{ color: "red" }}>*</span>
+            </label>
+            <input
+              type="text"
+              value={QuantityofItem}
+              className="form-control"
+              placeholder="Quantity of the Product"
+              id="ProductQuantity"
+              aria-label="ProductQuantity"
+              aria-describedby="ProductQuantity"
+              onChange={initialQuantityofItem}
+            />
+          </div>
+          {validQuantityofItem === 0 && QuantityofItem !== "" && (
+            <p style={{ color: "red", textAlign: "center" }}>
+              Quantity of the Item should contains only integer value
             </p>
           )}
 

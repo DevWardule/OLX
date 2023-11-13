@@ -37,6 +37,17 @@ export default function Profile() {
     }
     a.userId && fetchCurUser();
     fetchMyproduct();
+
+    async function fetchFav() {
+      let fetchres = await fetch(
+        `http://127.0.0.1:3000/api/fav/findAllFav/${a.userId}`
+      );
+      let res = await fetchres.json();
+      // console.log(res);
+      setUserFavProduct(res);
+    }
+
+    fetchFav();
   }, [a]);
 
   const InformationOfCard = [
@@ -112,11 +123,13 @@ export default function Profile() {
           </div>
         </div>
         <hr />
-        {/* <div className="container my-3">
+
+        {/* Favourite product list */}
+        <div className="container my-3">
           <h2 className="text-right">Favourite Products</h2>
           <div className="row my-3">
-            {console.log("The size is ", InformationOfCard.length)}
-            {InformationOfCard.map((element) => {
+            {console.log("The size is ", userFavProduct.length)}
+            {userFavProduct.map((element) => {
               return (
                 <div className="col-md-3" key={element.id}>
                   <ItemInfo
@@ -130,7 +143,7 @@ export default function Profile() {
               );
             })}
           </div>
-        </div> */}
+        </div>
 
         <hr />
         <div className="container my-3">

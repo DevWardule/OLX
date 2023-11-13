@@ -27,6 +27,7 @@ const addProduct = async (req, res) => {
     location: req.body.loc,
     categId: req.body.catid,
     userId: req.body.seller_id,
+    quantity: req.body.quantity,
   };
   let obj = await db.products.create(prodobj);
   res.send(obj);
